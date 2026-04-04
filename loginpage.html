@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiteLearn | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1d63ff;
+            --hover-blue: #1652d1;
+            --bg-page: #f8faff;
+            --bg-card: #ffffff;
+            --text-main: #111827;
+            --text-muted: #4b5563;
+            --border: #e5e7eb;
+            --toggle-group: #f1f5f9;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        [data-theme="dark"] {
+            --bg-page: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --toggle-group: #334155;
+            --nav-bg: rgba(15, 23, 42, 0.9);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--primary-blue), #60a5fa);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(29, 99, 255, 0.3);
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: var(--primary-blue);
+        }
+
+        .theme-switch {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: var(--toggle-group);
+            border: 2px solid var(--border);
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Main Layout --- */
+        .main-wrapper {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+            padding: 60px 5%;
+            gap: 60px;
+        }
+
+        .slogan-section {
+            flex: 1;
+        }
+
+        .slogan-section h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 25px;
+            letter-spacing: -2px;
+            background: linear-gradient(90deg, var(--primary-blue), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(29, 99, 255, 0.1);
+        }
+
+        .slogan-section p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        /* --- Login Card --- */
+        .form-section {
+            flex: 1;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            padding: 45px;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border);
+        }
+
+        /* Social Auth Grid */
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px; /* Spacing before toggle */
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 800;
+            transition: all 0.2s;
+        }
+
+        .btn-social:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Role Toggle - Now below Social Grid */
+        .role-toggle {
+            display: flex;
+            background: var(--toggle-group);
+            padding: 6px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .role-toggle input { display: none; }
+        .role-toggle label {
+            flex: 1;
+            padding: 14px;
+            cursor: pointer;
+            z-index: 1;
+            font-weight: 900;
+            text-align: center;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            height: calc(100% - 12px);
+            width: calc(50% - 6px);
+            background: var(--primary-blue);
+            border-radius: 12px;
+            top: 6px;
+            left: 6px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #teacher:checked ~ .toggle-slider { transform: translateX(100%); }
+        #student:checked ~ label[for="student"], 
+        #teacher:checked ~ label[for="teacher"] { color: white; }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px solid var(--border);
+        }
+        .divider:not(:empty)::before { margin-right: 1.5em; }
+        .divider:not(:empty)::after { margin-left: 1.5em; }
+
+        /* Form Controls */
+        .input-group { margin-bottom: 20px; }
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            background: var(--toggle-group);
+            color: var(--text-main);
+            border: 2px solid transparent;
+            border-radius: 14px;
+            outline: none;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-blue);
+            background: var(--bg-card);
+            box-shadow: 0 0 0 5px rgba(29, 99, 255, 0.1);
+        }
+
+        .forgot-pass {
+            display: block;
+            text-align: right;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            text-decoration: none;
+            margin-top: -10px;
+            margin-bottom: 25px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(29, 99, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .footer-link {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .footer-link a { color: var(--primary-blue); text-decoration: none; font-weight: 900; }
+
+        @media (max-width: 1024px) {
+            .main-wrapper { flex-direction: column; align-items: center; padding-top: 30px; }
+            .slogan-section { text-align: center; }
+            .slogan-section h1 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+<nav>
+    <a href="#" class="logo-container">
+        <div class="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+        </div>
+        <span class="logo-text">Nexo</span>
+    </a>
+    <button class="theme-switch" onclick="toggleTheme()" id="themeBtn">
+        <span>🌙</span> <span id="themeLabel">Dark</span>
+    </button>
+</nav>
+
+<div class="main-wrapper">
+    <div class="slogan-section">
+        <h1>Welcome Back,<br>Ready to Learn?</h1>
+        <p>Log in to access your courses, track your progress, and continue your journey toward mastery.</p>
+    </div>
+
+    <div class="form-section">
+        <div class="login-card">
+            
+            <div class="social-grid">
+                <button class="btn-social">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Google
+                </button>
+                <button class="btn-social">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" width="20"> Microsoft
+                </button>
+            </div>
+
+            <div class="role-toggle">
+                <input type="radio" name="role" id="student" checked>
+                <label for="student">🎓 Student</label>
+                
+                <input type="radio" name="role" id="teacher">
+                <label for="teacher">👨‍🏫 Teacher</label>
+                
+                <div class="toggle-slider"></div>
+            </div>
+
+            <div class="divider">Or Login with Email</div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Username / Email</label>
+                    <input type="text" placeholder="johndoe_99" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+
+                <a href="#" class="forgot-pass">Forgot Password?</a>
+                
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+
+            <div class="footer-link">
+                Don't have an account? <a href="signuppage.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const label = document.getElementById('themeLabel');
+        const icon = document.querySelector('.theme-switch span:first-child');
+        const isDark = body.getAttribute('data-theme') === 'dark';
+        
+        if (isDark) {
+            body.setAttribute('data-theme', 'light');
+            label.innerText = 'Dark';
+            icon.innerText = '🌙';
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            label.innerText = 'Light';
+            icon.innerText = '☀️';
+        }
+    }
+
+ document.getElementById('loginForm').onsubmit = async (e) => {
+    e.preventDefault();
+
+    const username = e.target.querySelector('input[type="text"]').value;
+    const password = e.target.querySelector('input[type="password"]').value;
+    const role = document.querySelector('input[name="role"]:checked').id;
+
+    try {
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password, role })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('role', result.role);
+
+            // ROLE-BASED REDIRECTION
+            if (result.role === 'teacher') {
+                window.location.href = "dashboardteacher.html";
+            } else {
+                window.location.href = "dashboard.html"; // Student Dashboard
+            }
+        } else {
+            alert(result.error || "Login failed");
+        }
+    } catch (err) {
+        alert("Server error. Make sure app.js is running.");
+    }
+};
+</script>
+
+</body>
+</html>
